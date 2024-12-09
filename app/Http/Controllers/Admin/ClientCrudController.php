@@ -34,44 +34,110 @@ class ClientCrudController extends CrudController
     /**
      * Define what happens when the List operation is loaded.
      * 
-     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
+        // Define the columns for the List view
+        CRUD::addColumn([
+            'name' => 'name',
+            'type' => 'text',
+            'label' => 'Client Name',
+        ]);
 
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
+        CRUD::addColumn([
+            'name' => 'contact_number',
+            'type' => 'text',
+            'label' => 'Contact Number',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'employee_id',
+            'type' => 'select',
+            'label' => 'Assigned Employee',
+            'entity' => 'employee', // Relationship method in the Client model
+            'attribute' => 'name', // Employee name to display
+            'model' => 'App\Models\Employee', // Employee model
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'services',
+            'type' => 'json', // Displays the services as JSON data
+            'label' => 'Services Selected',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'schedule',
+            'type' => 'datetime',
+            'label' => 'Appointment Schedule',
+        ]);
     }
 
     /**
      * Define what happens when the Create operation is loaded.
      * 
-     * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
     protected function setupCreateOperation()
     {
         CRUD::setValidation(ClientRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
 
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        // Define the fields for the Create form
+        CRUD::addField([
+            'name' => 'name',
+            'type' => 'text',
+            'label' => 'Client Name',
+        ]);
+
+        CRUD::addField([
+            'name' => 'contact_number',
+            'type' => 'text',
+            'label' => 'Contact Number',
+        ]);
+
+        CRUD::addField([
+            'name' => 'employee_id',
+            'type' => 'select2',
+            'label' => 'Assign Employee',
+            'entity' => 'employee', // Relationship method in the Client model
+            'attribute' => 'name', // Employee name to display
+            'model' => 'App\Models\Employee', // Employee model
+        ]);
+
+        CRUD::addField([
+            'name' => 'services',
+            'type' => 'repeatable', // Allows selecting multiple services
+            'label' => 'Services',
+            'fields' => [
+                [
+                    'name' => 'service_name',
+                    'type' => 'text',
+                    'label' => 'Service Name',
+                ],
+                [
+                    'name' => 'service_price',
+                    'type' => 'number',
+                    'label' => 'Price ',
+                    'attributes' => ['step' => '0.01'], // Allows decimals
+                    'prefix' => 'Php',
+                ],
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'schedule',
+            'type' => 'datetime_picker',
+            'label' => 'Appointment Schedule',
+        ]);
     }
 
     /**
      * Define what happens when the Update operation is loaded.
      * 
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+        $this->setupCreateOperation(); // Reuse the fields from Create
     }
 }

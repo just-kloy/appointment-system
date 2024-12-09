@@ -34,44 +34,95 @@ class EmployeeCrudController extends CrudController
     /**
      * Define what happens when the List operation is loaded.
      * 
-     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
+        // Customize the columns shown in the table
+        CRUD::addColumn([
+            'name' => 'name',
+            'type' => 'text',
+            'label' => 'Employee Name',
+        ]);
 
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
+        CRUD::addColumn([
+            'name' => 'contact_number',
+            'type' => 'text',
+            'label' => 'Contact Number',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'services',
+            'type' => 'json', // Displays JSON data as readable text
+            'label' => 'Services Offered',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'amount',
+            'type' => 'number',
+            'label' => 'Price (PHP)',
+            'prefix' => '₱',
+        ]);
     }
 
     /**
      * Define what happens when the Create operation is loaded.
      * 
-     * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
     protected function setupCreateOperation()
     {
         CRUD::setValidation(EmployeeRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
 
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        // Customize the fields in the Create form
+        CRUD::addField([
+            'name' => 'name',
+            'type' => 'text',
+            'label' => 'Employee Name',
+        ]);
+
+        CRUD::addField([
+            'name' => 'contact_number',
+            'type' => 'text',
+            'label' => 'Contact Number',
+        ]);
+
+        CRUD::addField([
+            'name' => 'services',
+            'type' => 'repeatable', // Allows multiple entries
+            'label' => 'Services Offered',
+            'fields' => [
+                [
+                    'name' => 'service_name',
+                    'type' => 'text',
+                    'label' => 'Service Name',
+                ],
+                [
+                    'name' => 'service_price',
+                    'type' => 'number',
+                    'label' => 'Price ',
+                    'attributes' => ['step' => '0.01'], // To allow decimals
+                    'prefix' => 'Php',
+                ],
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'amount',
+            'type' => 'number',
+            'label' => 'Total Price (PHP)',
+            'attributes' => ['step' => '0.01'], // Allows decimals
+            'prefix' => 'Php',
+        ]);
     }
 
     /**
      * Define what happens when the Update operation is loaded.
      * 
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+        $this->setupCreateOperation(); // Reuse the fields from Create
     }
 }
