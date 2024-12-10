@@ -24,4 +24,5 @@ class Client extends Model
     {
         return $this->employee ? $this->employee->services : [];
     }
+    
 }

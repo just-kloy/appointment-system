@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CalendarEventCrudController;
 use Illuminate\Support\Facades\Route;
 
 // --------------------------
@@ -19,6 +20,10 @@ Route::group([
     Route::crud('user', 'UserCrudController');
     Route::crud('employee', 'EmployeeCrudController');
     Route::crud('client', 'ClientCrudController');
+    // Route::crud('calendar-event', 'CalendarEventCrudController');
+
+    // Add a custom route for the Calendar view
+    Route::get('calendar', [CalendarEventCrudController::class, 'calendar'])->name('calendar.view');
 }); // this should be the absolute last line of this file
 
 /**
