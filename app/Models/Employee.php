@@ -9,7 +9,12 @@ class Employee extends Model
 {
     use CrudTrait;
     
-    protected $fillable = ['name', 'contact_number', 'services', 'amount'];
+    protected $fillable = [
+        'name',
+     'contact_number',
+      'service_name',
+       'amount',
+    ];
 
     protected $casts = [
         'services' => 'array', // Cast services as an array

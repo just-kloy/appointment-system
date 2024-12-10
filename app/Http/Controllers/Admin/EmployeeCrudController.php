@@ -39,30 +39,34 @@ class EmployeeCrudController extends CrudController
     protected function setupListOperation()
     {
         // Customize the columns shown in the table
-        CRUD::addColumn([
-            'name' => 'name',
-            'type' => 'text',
-            'label' => 'Employee Name',
-        ]);
+        // Employee name
+    CRUD::addColumn([
+        'name' => 'name',
+        'type' => 'text',
+        'label' => 'Employee Name',
+    ]);
 
-        CRUD::addColumn([
-            'name' => 'contact_number',
-            'type' => 'text',
-            'label' => 'Contact Number',
-        ]);
+    // Contact number
+    CRUD::addColumn([
+        'name' => 'contact_number',
+        'type' => 'text',
+        'label' => 'Contact Number',
+    ]);
 
-        CRUD::addColumn([
-            'name' => 'services',
-            'type' => 'json', // Displays JSON data as readable text
-            'label' => 'Services Offered',
-        ]);
+    // Service name
+    CRUD::addColumn([
+        'name' => 'service_name',
+        'type' => 'text',
+        'label' => 'Service',
+    ]);
 
-        CRUD::addColumn([
-            'name' => 'amount',
-            'type' => 'number',
-            'label' => 'Price (PHP)',
-            'prefix' => '₱',
-        ]);
+    // Service price
+    CRUD::addColumn([
+        'name' => 'amount',
+        'type' => 'number',
+        'label' => 'Service Price',
+        'prefix' => 'Php ', // Adds PHP currency symbol
+    ]);
     }
 
     /**
@@ -75,45 +79,34 @@ class EmployeeCrudController extends CrudController
         CRUD::setValidation(EmployeeRequest::class);
 
         // Customize the fields in the Create form
-        CRUD::addField([
-            'name' => 'name',
-            'type' => 'text',
-            'label' => 'Employee Name',
-        ]);
+        // Employee name
+    CRUD::addField([
+        'name' => 'name',
+        'type' => 'text',
+        'label' => 'Employee Name',
+    ]);
 
-        CRUD::addField([
-            'name' => 'contact_number',
-            'type' => 'text',
-            'label' => 'Contact Number',
-        ]);
+    // Contact number
+    CRUD::addField([
+        'name' => 'contact_number',
+        'type' => 'text',
+        'label' => 'Contact Number',
+    ]);
 
-        CRUD::addField([
-            'name' => 'services',
-            'type' => 'repeatable', // Allows multiple entries
-            'label' => 'Services Offered',
-            'fields' => [
-                [
-                    'name' => 'service_name',
-                    'type' => 'text',
-                    'label' => 'Service Name',
-                ],
-                [
-                    'name' => 'service_price',
-                    'type' => 'number',
-                    'label' => 'Price ',
-                    'attributes' => ['step' => '0.01'], // To allow decimals
-                    'prefix' => 'Php',
-                ],
-            ],
-        ]);
+    // Service name
+    CRUD::addField([
+        'name' => 'service_name',
+        'type' => 'text',
+        'label' => 'Service',
+    ]);
 
-        CRUD::addField([
-            'name' => 'amount',
-            'type' => 'number',
-            'label' => 'Total Price (PHP)',
-            'attributes' => ['step' => '0.01'], // Allows decimals
-            'prefix' => 'Php',
-        ]);
+    // Service price
+    CRUD::addField([
+        'name' => 'amount',
+        'type' => 'number',
+        'label' => 'Service Price',
+        'prefix' => 'Php', // Adds PHP currency symbol
+    ]);
     }
 
     /**

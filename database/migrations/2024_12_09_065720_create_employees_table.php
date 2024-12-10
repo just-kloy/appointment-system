@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('contact_number');
-            $table->json('services'); // To store multiple services
-            $table->decimal('amount', 8, 2); // Price of the services
+            $table->string('service_name'); // Set a default value
+            $table->decimal('amount');
             $table->timestamps();
             
         });

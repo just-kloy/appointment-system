@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('contact_number');
             $table->foreignId('employee_id')->constrained()->onDelete('cascade'); // Assign employee
-            $table->json('services'); // Selected services
             $table->timestamp('schedule'); // Appointment schedule
             $table->timestamps();
         });
