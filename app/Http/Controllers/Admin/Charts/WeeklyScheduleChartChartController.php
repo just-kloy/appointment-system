@@ -18,12 +18,12 @@ class WeeklyScheduleChartChartController extends ChartController
         $this->chart = new Chart();
 
         // MANDATORY. Set the labels for the dataset points
-        $this->chart->labels([
-            'Today',
-        ]);
+        // $this->chart->labels([
+        //     'Today',
+        // ]);
 
-        // RECOMMENDED. Set URL that the ChartJS library should call, to get its data using AJAX.
-        $this->chart->load(backpack_url('charts/weekly-schedule-chart'));
+        // // RECOMMENDED. Set URL that the ChartJS library should call, to get its data using AJAX.
+        // $this->chart->load(backpack_url('charts/weekly-schedule-chart'));
 
         // OPTIONAL
         // $this->chart->minimalist(false);
