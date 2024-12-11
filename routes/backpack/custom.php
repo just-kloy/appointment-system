@@ -24,6 +24,9 @@ Route::group([
 
     // Add a custom route for the Calendar view
     Route::get('calendar', [CalendarEventCrudController::class, 'calendar'])->name('calendar.view');
+    Route::get('charts/weekly-schedule-chart', 'Charts\WeeklyScheduleChartChartController@response')->name('charts.weekly-schedule-chart.index');
+    Route::get('dashboard', 'App\Http\Controllers\Admin\DashboardController@index')->name('backpack.dashboard');
+
 }); // this should be the absolute last line of this file
 
 /**

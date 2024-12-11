@@ -58,7 +58,13 @@ class ClientCrudController extends CrudController
         CRUD::addColumn([
             'name' => 'schedule',
             'type' => 'datetime',
-            'label' => 'Appointment Schedule',
+            'label' => 'Start Schedule',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'end_schedule',
+            'type' => 'datetime',
+            'label' => 'End Schedule',
         ]);
     }
 
@@ -88,45 +94,18 @@ class ClientCrudController extends CrudController
             'entity' => 'employee',
             'attribute' => 'name',
             'model' => 'App\Models\Employee',
-            'wrapper' => ['class' => 'form-group col-md-6'],
-            'attributes' => ['onchange' => 'fetchEmployeeServices()'], // Trigger JavaScript to fetch services
-        ]);
-
-        CRUD::addField([
-            'name' => 'services',  // You can optionally keep this field for reference
-            'type' => 'text',
-            'label' => 'Services Offered by Assigned Employee',
-            'hint' => 'Automatically fetched from the assigned employee',
-            'attributes' => ['readonly' => 'readonly'], // Make it read-only
-            'wrapper' => ['class' => 'form-group col-md-6'],
         ]);
 
         CRUD::addField([
             'name' => 'schedule',
             'type' => 'datetime',
-            'label' => 'Appointment Schedule',
+            'label' => 'Start Schedule',
         ]);
 
-        // Add a script to fetch employee services on employee selection
         CRUD::addField([
-            'type' => 'custom_html',
-            'name' => 'custom_html',
-            'value' => '<script>
-                function fetchEmployeeServices() {
-                    var employeeId = document.getElementById("employee_id").value;
-                    if (employeeId) {
-                        axios.get("/admin/employee/" + employeeId + "/services")
-                            .then(function(response) {
-                                document.getElementById("services").value = response.data.services.join(", ");
-                            })
-                            .catch(function(error) {
-                                console.error("Error fetching services:", error);
-                            });
-                    } else {
-                        document.getElementById("services").value = "";
-                    }
-                }
-            </script>',
+            'name' => 'end_schedule',
+            'type' => 'datetime',
+            'label' => 'End Schedule',
         ]);
     }
 
@@ -167,7 +146,13 @@ class ClientCrudController extends CrudController
         CRUD::addColumn([
             'name' => 'schedule',
             'type' => 'datetime',
-            'label' => 'Appointment Schedule',
+            'label' => 'Start Schedule',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'end_schedule',
+            'type' => 'datetime',
+            'label' => 'End Schedule',
         ]);
     }
 }

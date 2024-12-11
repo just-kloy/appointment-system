@@ -19,4 +19,11 @@ class Employee extends Model
     protected $casts = [
         'services' => 'array', // Cast services as an array
     ];
+
+    // App\Models\Employee.php
+public function clients()
+{
+    return $this->hasMany(Client::class);
+}
+
 }

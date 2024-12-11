@@ -23,8 +23,6 @@ class CalendarEventCrudController extends CrudController
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     * 
-     * @return void
      */
     public function setup()
     {
@@ -35,8 +33,6 @@ class CalendarEventCrudController extends CrudController
 
     /**
      * Define what happens when the List operation is loaded.
-     * 
-     * @return void
      */
     protected function setupListOperation()
     {
@@ -44,22 +40,32 @@ class CalendarEventCrudController extends CrudController
             'name' => 'client_id',
             'type' => 'select',
             'label' => 'Client',
-            'entity' => 'client',  // The relationship in the model
-            'attribute' => 'name',  // Field from the Client model
+            'entity' => 'client',
+            'attribute' => 'name',
             'model' => 'App\Models\Client',
         ]);
 
         CRUD::addColumn([
             'name' => 'schedule',
             'type' => 'datetime',
-            'label' => 'Appointment Schedule',
+            'label' => 'Appointment Start',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'end_schedule',
+            'type' => 'datetime',
+            'label' => 'Appointment End',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'employee.service_name',
+            'type' => 'text',
+            'label' => 'Service Name',
         ]);
     }
 
     /**
      * Define what happens when the Create operation is loaded.
-     * 
-     * @return void
      */
     protected function setupCreateOperation()
     {
@@ -77,14 +83,18 @@ class CalendarEventCrudController extends CrudController
         CRUD::addField([
             'name' => 'schedule',
             'type' => 'datetime',
-            'label' => 'Date and Time',
+            'label' => 'Start Date and Time',
+        ]);
+
+        CRUD::addField([
+            'name' => 'end_schedule',
+            'type' => 'datetime',
+            'label' => 'End Date and Time',
         ]);
     }
 
     /**
      * Define what happens when the Update operation is loaded.
-     * 
-     * @return void
      */
     protected function setupUpdateOperation()
     {
@@ -93,21 +103,20 @@ class CalendarEventCrudController extends CrudController
 
     /**
      * Provide calendar events data for FullCalendar (returns JSON).
-     * 
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function fetchEvents(Request $request)
     {
-        $events = \App\Models\Client::all()  // Fetch all clients
+        $events = \App\Models\Client::with('employee')->get()
             ->map(function ($client) {
-                $schedule = Carbon::parse($client->schedule);  // Convert schedule to Carbon instance
+                $start = Carbon::parse($client->schedule);
+                $end = Carbon::parse($client->end_schedule);
 
                 return [
                     'id' => $client->id,
-                    'title' => $client->name,  // Display the client name
-                    'start' => $schedule->toIso8601String(),  // Convert to ISO 8601 string
-                    'end' => $schedule->toIso8601String(),  // Same date (optional)
+                    'title' => $client->name . ' _ ' .
+                     ($client->employee->name ?? 'No Service'),
+                    'start' => $start->toIso8601String(),
+                    'end' => $end->toIso8601String(),
                 ];
             });
 
@@ -116,25 +125,24 @@ class CalendarEventCrudController extends CrudController
 
     /**
      * Show the calendar view with events data.
-     * 
-     * @return \Illuminate\View\View
      */
     public function calendar()
     {
-        // Fetch all clients' appointments
-        $events = \App\Models\Client::all()
+        $events = \App\Models\Client::with('employee')->get()
             ->map(function ($client) {
-                $schedule = Carbon::parse($client->schedule);  // Convert schedule to Carbon instance
+                $start = Carbon::parse($client->schedule);
+                $end = Carbon::parse($client->end_schedule);
 
                 return [
-                    'title' => $client->name, // Client name as event title
-                    'start' => $schedule->toIso8601String(), // Appointment date
-                    'end' => $schedule->toIso8601String(), // Optional: Same date as end
+                    'title' => $client->name . ' _ ' . 
+                    ($client->employee->name ?? 'No Service'),
+                    'start' => $start->toIso8601String(),
+                    'end' => $end->toIso8601String(),
                 ];
             });
 
         return view('vendor.backpack.crud.calendar', [
-            'events' => $events, // Pass events to the calendar view
+            'events' => $events,
         ]);
     }
 }
